@@ -9,13 +9,6 @@
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Sarabun',sans-serif;background:#f0f4f8;color:#1a202c;min-height:100vh}
 
-/* ---- CONFIG BANNER ---- */
-#config-banner{background:#744210;color:#fefcbf;padding:10px 20px;font-size:13px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-#config-banner input{flex:1;min-width:260px;padding:5px 10px;border-radius:6px;border:none;font-size:13px;font-family:'Sarabun',sans-serif}
-#config-banner button{padding:5px 14px;border-radius:6px;border:none;background:#f6ad55;color:#744210;font-weight:600;cursor:pointer;font-family:'Sarabun',sans-serif;font-size:13px}
-#config-banner button:hover{background:#ed8936}
-#config-banner.ok{background:#276749;color:#c6f6d5}
-
 header{background:#1a365d;color:white;padding:12px 20px;position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.25)}
 .header-left h1{font-size:16px;font-weight:600}
 .header-left p{font-size:11px;color:#90cdf4;margin-top:2px}
@@ -60,19 +53,11 @@ thead .th-remark{background:#4a5568}thead .th-status{background:#2d3748}
 .hbtn-outline:hover{background:rgba(255,255,255,.1)}
 .hbtn-primary{background:#3182ce;color:white}
 .hbtn-primary:hover{background:#2b6cb0}
-.loading-wrap{text-align:center;padding:2rem;color:#718096;font-size:14px}
+.loading-wrap{text-align:center;padding:3rem;color:#718096;font-size:15px}
 @media(max-width:680px){table{font-size:11px}thead th,tbody td{padding:6px 5px}.remark-td{display:none}}
 </style>
 </head>
 <body>
-
-<!-- CONFIG BANNER -->
-<div id="config-banner">
-  <span>⚙️ ใส่ Google Apps Script URL ก่อนใช้งาน:</span>
-  <input type="text" id="api-url-input" placeholder="https://script.google.com/macros/s/XXXXX/exec" />
-  <button onclick="saveApiUrl()">บันทึก URL</button>
-  <span id="url-status"></span>
-</div>
 
 <div id="toast"></div>
 
@@ -97,34 +82,11 @@ thead .th-remark{background:#4a5568}thead .th-status{background:#2d3748}
   <div class="sum-chip" style="background:#faf5ff;color:#6b46c1">📋 WO+ใบจ่าย: <strong id="s6">0</strong></div>
 </div>
 
-<main id="main-content"><div class="loading-wrap">⏳ กำลังโหลด...</div></main>
+<main id="main-content"><div class="loading-wrap">⏳ กำลังโหลดข้อมูล...</div></main>
 
 <script>
-// ======= API URL (เก็บใน localStorage) =======
-const LS_KEY = 'cmms_api_url';
-let API_URL = localStorage.getItem(LS_KEY) || '';
-
-function saveApiUrl() {
-  const val = document.getElementById('api-url-input').value.trim();
-  if (!val.startsWith('https://script.google.com')) {
-    showToast('❌ URL ไม่ถูกต้อง ต้องขึ้นต้นด้วย https://script.google.com', true);
-    return;
-  }
-  API_URL = val;
-  localStorage.setItem(LS_KEY, val);
-  document.getElementById('config-banner').className = 'ok';
-  document.getElementById('url-status').textContent = '✅ บันทึกแล้ว';
-  showToast('✅ บันทึก URL แล้ว กำลังโหลดข้อมูล...');
-  setTimeout(loadAll, 800);
-}
-
-function initBanner() {
-  if (API_URL) {
-    document.getElementById('api-url-input').value = API_URL;
-    document.getElementById('config-banner').className = 'ok';
-    document.getElementById('url-status').textContent = '✅ พร้อมใช้งาน';
-  }
-}
+// ======= API URL (hardcoded) =======
+const API_URL = 'https://script.google.com/macros/s/AKfycbyr18HGFuv88wfbe9BPYi74_mFMaUC1tUzN40VRQ2hDmShbPn7FBR3y3jTLXjCMO1dxJg/exec';
 
 // ======= DATA =======
 const GROUPS = [
@@ -202,64 +164,56 @@ function updateSummary() {
   const c=[0,0,0,0,0,0];
   GROUPS.forEach(g=>g.rows.forEach(r=>{
     const id=rowId(r.dept);
-    const g2=n=>{ const e=document.getElementById(n+'_'+id); return e&&e.checked; };
-    if(g2('c1'))c[0]++; if(g2('c2'))c[1]++; if(g2('c3'))c[2]++;
-    if(g2('c4'))c[3]++; if(g2('c5'))c[4]++; if(g2('c6'))c[5]++;
+    const v=n=>{ const e=document.getElementById(n+'_'+id); return e&&e.checked; };
+    if(v('c1'))c[0]++; if(v('c2'))c[1]++; if(v('c3'))c[2]++;
+    if(v('c4'))c[3]++; if(v('c5'))c[4]++; if(v('c6'))c[5]++;
   }));
   for(let i=1;i<=6;i++) document.getElementById('s'+i).textContent=c[i-1];
 }
 
 function getPayload(id, dept, group) {
-  const g=n=>{ const e=document.getElementById(n+'_'+id); return e?e.checked:false; };
+  const v=n=>{ const e=document.getElementById(n+'_'+id); return e?e.checked:false; };
   const rm=document.getElementById('rm_'+id);
-  return {dept,group,c1:g('c1'),c2:g('c2'),c3:g('c3'),c4:g('c4'),c5:g('c5'),c6:g('c6'),remark:rm?rm.value:''};
+  return {dept,group,c1:v('c1'),c2:v('c2'),c3:v('c3'),c4:v('c4'),c5:v('c5'),c6:v('c6'),remark:rm?rm.value:''};
 }
 
-// ======= SAVE via fetch POST =======
+// ======= SAVE =======
 function saveRow(id) {
-  if (!API_URL) { showToast('❌ กรุณาใส่ Google Apps Script URL ก่อน', true); return; }
-  const row = document.getElementById('row_'+id);
-  const dept = row.getAttribute('data-dept');
-  const group = row.getAttribute('data-group');
-  const btn = document.getElementById('btn_'+id);
+  const row=document.getElementById('row_'+id);
+  const dept=row.getAttribute('data-dept');
+  const group=row.getAttribute('data-group');
+  const btn=document.getElementById('btn_'+id);
   btn.textContent='⏳...'; btn.disabled=true; btn.className='save-btn saving';
 
   fetch(API_URL, {
-    method: 'POST',
-    mode: 'no-cors',           // Apps Script ต้องการ no-cors
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify(getPayload(id, dept, group))
+    method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(getPayload(id,dept,group))
   })
-  .then(() => {
-    // no-cors ไม่รู้ response จริง — ถือว่าสำเร็จ
+  .then(()=>{
     btn.textContent='✅ บันทึกแล้ว'; btn.disabled=true; btn.className='save-btn';
     showToast('✅ บันทึก '+dept+' แล้ว');
   })
-  .catch(err => {
+  .catch(err=>{
     btn.textContent='❌ ลองใหม่'; btn.disabled=false; btn.className='save-btn';
-    showToast('❌ เกิดข้อผิดพลาด: '+err.message, true);
+    showToast('❌ Error: '+err.message, true);
   });
 }
 
 function saveAll() {
-  let pending=0;
+  let n=0;
   GROUPS.forEach(g=>g.rows.forEach(r=>{
     const id=rowId(r.dept);
     const btn=document.getElementById('btn_'+id);
-    if(btn&&!btn.disabled) pending++;
+    if(btn&&!btn.disabled){ saveRow(id); n++; }
   }));
-  if(pending===0){ showToast('ไม่มีรายการที่ต้องบันทึก'); return; }
-  GROUPS.forEach(g=>g.rows.forEach(r=>{
-    const id=rowId(r.dept);
-    const btn=document.getElementById('btn_'+id);
-    if(btn&&!btn.disabled) saveRow(id);
-  }));
+  if(n===0) showToast('ไม่มีรายการที่ต้องบันทึก');
 }
 
-// ======= LOAD via fetch GET =======
+// ======= LOAD =======
 function loadAll() {
-  if (!API_URL) { showToast('❌ กรุณาใส่ Google Apps Script URL ก่อน', true); return; }
-  document.getElementById('main-content').innerHTML='<div class="loading-wrap">⏳ กำลังโหลด...</div>';
+  document.getElementById('main-content').innerHTML='<div class="loading-wrap">⏳ กำลังโหลดข้อมูล...</div>';
   fetch(API_URL+'?action=getAll')
     .then(r=>r.json())
     .then(res=>{
@@ -271,19 +225,18 @@ function loadAll() {
     .catch(()=>{
       renderTables();
       updateSummary();
-      showToast('⚠️ โหลดข้อมูลไม่ได้ แต่ยังติ๊กบันทึกได้', true);
+      showToast('⚠️ โหลดไม่สำเร็จ แต่ยังบันทึกได้ปกติ', true);
     });
 }
 
 function applyData(rows) {
   rows.forEach(row=>{
-    const dept=row['หน่วยงาน'];
-    const id=rowId(dept);
-    const set=(n,val)=>{ const e=document.getElementById(n+'_'+id); if(e) e.checked=(val==='✓'); };
+    const id=rowId(row['หน่วยงาน']);
+    const set=(n,v)=>{ const e=document.getElementById(n+'_'+id); if(e) e.checked=(v==='✓'); };
     set('c1',row['1.User CMMS']); set('c2',row['2.Email แจ้ง']); set('c3',row['3.ใช้วิทยุ']);
     set('c4',row['4.ต้องการ SR']); set('c5',row['5.ไม่ต้องการ SR']); set('c6',row['6.สร้าง WO+ใบจ่าย']);
     const rm=document.getElementById('rm_'+id); if(rm) rm.value=row['หมายเหตุ']||'';
-    const btn=document.getElementById('btn_'+id); if(btn){ btn.textContent='✅ บันทึกแล้ว'; btn.disabled=true; }
+    const btn=document.getElementById('btn_'+id); if(btn){btn.textContent='✅ บันทึกแล้ว';btn.disabled=true;}
   });
 }
 
@@ -294,10 +247,7 @@ function showToast(msg, isError) {
 }
 
 // ======= INIT =======
-initBanner();
-renderTables();
-updateSummary();
-if (API_URL) setTimeout(loadAll, 500);
+loadAll();
 </script>
 </body>
 </html>
