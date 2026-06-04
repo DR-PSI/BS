@@ -6,157 +6,72 @@
 <title>CMMS Survey</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600;700&display=swap');
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Sarabun', sans-serif; background: #f0f4f8; color: #1a202c; min-height: 100vh; }
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Sarabun',sans-serif;background:#f0f4f8;color:#1a202c;min-height:100vh}
 
-header {
-  background: #1a365d; color: white;
-  padding: 12px 20px;
-  position: sticky; top: 0; z-index: 200;
-  display: flex; align-items: center; justify-content: space-between;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
-}
-.header-left h1 { font-size: 16px; font-weight: 600; }
-.header-left p { font-size: 11px; color: #90cdf4; margin-top: 2px; }
+/* ---- CONFIG BANNER ---- */
+#config-banner{background:#744210;color:#fefcbf;padding:10px 20px;font-size:13px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+#config-banner input{flex:1;min-width:260px;padding:5px 10px;border-radius:6px;border:none;font-size:13px;font-family:'Sarabun',sans-serif}
+#config-banner button{padding:5px 14px;border-radius:6px;border:none;background:#f6ad55;color:#744210;font-weight:600;cursor:pointer;font-family:'Sarabun',sans-serif;font-size:13px}
+#config-banner button:hover{background:#ed8936}
+#config-banner.ok{background:#276749;color:#c6f6d5}
 
-.summary-bar {
-  background: white; border-bottom: 1px solid #e2e8f0;
-  padding: 8px 20px; display: flex; gap: 10px; align-items: center;
-  overflow-x: auto; flex-wrap: wrap;
-}
-.sum-chip {
-  display: flex; align-items: center; gap: 5px;
-  padding: 4px 10px; border-radius: 20px;
-  font-size: 12px; font-weight: 500; white-space: nowrap;
-}
+header{background:#1a365d;color:white;padding:12px 20px;position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+.header-left h1{font-size:16px;font-weight:600}
+.header-left p{font-size:11px;color:#90cdf4;margin-top:2px}
 
-/* TOAST */
-#toast {
-  position: fixed; bottom: 24px; right: 24px; z-index: 999;
-  background: #2f855a; color: white;
-  padding: 10px 18px; border-radius: 10px;
-  font-size: 13px; font-weight: 500;
-  opacity: 0; transform: translateY(10px);
-  transition: all 0.3s; pointer-events: none;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-#toast.show { opacity: 1; transform: translateY(0); }
-#toast.error { background: #c53030; }
+.summary-bar{background:white;border-bottom:1px solid #e2e8f0;padding:8px 20px;display:flex;gap:10px;align-items:center;overflow-x:auto;flex-wrap:wrap}
+.sum-chip{display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:500;white-space:nowrap}
 
-main { max-width: 1100px; margin: 0 auto; padding: 1.25rem 1rem 4rem; }
+#toast{position:fixed;bottom:24px;right:24px;z-index:999;background:#2f855a;color:white;padding:10px 18px;border-radius:10px;font-size:13px;font-weight:500;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+#toast.show{opacity:1;transform:translateY(0)}
+#toast.error{background:#c53030}
 
-.section-title {
-  font-size: 11px; font-weight: 600; color: #718096;
-  text-transform: uppercase; letter-spacing: 0.07em;
-  margin: 1.25rem 0 6px; padding-left: 4px;
-}
-
-.table-card {
-  background: white; border-radius: 12px;
-  border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 10px;
-}
-table { width: 100%; border-collapse: collapse; font-size: 13px; }
-
-thead tr { background: #2d3748; color: white; }
-thead th {
-  padding: 9px 10px; text-align: center;
-  font-weight: 500; font-size: 11px; white-space: nowrap;
-}
-thead th:first-child { text-align: left; min-width: 155px; }
-
-tbody tr { border-bottom: 1px solid #f0f4f8; transition: background 0.1s; }
-tbody tr:last-child { border-bottom: none; }
-tbody tr:hover { background: #f7fafc; }
-
-tbody td { padding: 8px 10px; text-align: center; vertical-align: middle; }
-tbody td:first-child { text-align: left; font-weight: 500; color: #2d3748; }
-.dept-sub { font-size: 11px; color: #a0aec0; font-weight: 400; }
-
-/* STATUS ICON */
-.status-icon {
-  font-size: 14px; display: inline-block;
-  width: 20px; line-height: 1;
-}
-
-/* CHECKBOX */
-.cb-wrap { display: flex; justify-content: center; }
-.cb-wrap input[type="checkbox"] {
-  width: 17px; height: 17px;
-  cursor: pointer; accent-color: #3182ce;
-}
-
-/* COL COLORS */
-.col-user { background: rgba(235,244,255,0.5); }
-.col-email { background: rgba(236,253,245,0.5); }
-.col-radio { background: rgba(255,251,235,0.5); }
-.col-sr-yes { background: rgba(240,253,244,0.5); }
-.col-sr-no { background: rgba(255,245,245,0.5); }
-.col-wo { background: rgba(250,240,255,0.5); }
-
-thead .th-user { background: #2b6cb0; }
-thead .th-email { background: #276749; }
-thead .th-radio { background: #975a16; }
-thead .th-sr-yes { background: #2f855a; }
-thead .th-sr-no { background: #c53030; }
-thead .th-wo { background: #6b46c1; }
-thead .th-remark { background: #4a5568; }
-thead .th-status { background: #2d3748; }
-
-.remark-td input[type="text"] {
-  font-family: 'Sarabun', sans-serif;
-  font-size: 12px; border: 1px solid #e2e8f0;
-  border-radius: 6px; padding: 4px 7px; width: 120px;
-  color: #2d3748; background: #f7fafc;
-}
-.remark-td input:focus { outline: none; border-color: #3182ce; background: white; }
-
-/* SAVE BUTTON per row */
-.save-btn {
-  font-family: 'Sarabun', sans-serif;
-  font-size: 11px; font-weight: 500;
-  padding: 4px 10px; border-radius: 6px;
-  border: none; cursor: pointer;
-  background: #ebf4ff; color: #2b6cb0;
-  transition: all 0.15s; white-space: nowrap;
-}
-.save-btn:hover { background: #bee3f8; }
-.save-btn:disabled { background: #e6fffa; color: #276749; cursor: default; }
-.save-btn.saving { background: #fefcbf; color: #975a16; }
-
-/* HEADER BUTTONS */
-.hbtn {
-  font-family: 'Sarabun', sans-serif;
-  font-size: 12px; font-weight: 500;
-  padding: 6px 12px; border-radius: 8px;
-  border: none; cursor: pointer; transition: all 0.15s;
-}
-.hbtn-outline { background: transparent; color: white; border: 1px solid rgba(255,255,255,0.4); }
-.hbtn-outline:hover { background: rgba(255,255,255,0.1); }
-.hbtn-primary { background: #3182ce; color: white; }
-.hbtn-primary:hover { background: #2b6cb0; }
-
-.loading-overlay {
-  position: fixed; inset: 0; background: rgba(0,0,0,0.35);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 500; display: none;
-}
-.loading-box {
-  background: white; border-radius: 12px;
-  padding: 24px 32px; text-align: center;
-  font-size: 15px; color: #2d3748;
-}
-
-@media (max-width: 680px) {
-  table { font-size: 11px; }
-  thead th, tbody td { padding: 6px 5px; }
-  .remark-td { display: none; }
-}
+main{max-width:1100px;margin:0 auto;padding:1.25rem 1rem 4rem}
+.section-title{font-size:11px;font-weight:600;color:#718096;text-transform:uppercase;letter-spacing:.07em;margin:1.25rem 0 6px;padding-left:4px}
+.table-card{background:white;border-radius:12px;border:1px solid #e2e8f0;overflow:hidden;margin-bottom:10px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead tr{background:#2d3748;color:white}
+thead th{padding:9px 10px;text-align:center;font-weight:500;font-size:11px;white-space:nowrap}
+thead th:first-child{text-align:left;min-width:155px}
+tbody tr{border-bottom:1px solid #f0f4f8;transition:background .1s}
+tbody tr:last-child{border-bottom:none}
+tbody tr:hover{background:#f7fafc}
+tbody td{padding:8px 10px;text-align:center;vertical-align:middle}
+tbody td:first-child{text-align:left;font-weight:500;color:#2d3748}
+.dept-sub{font-size:11px;color:#a0aec0;font-weight:400}
+.cb-wrap{display:flex;justify-content:center}
+.cb-wrap input[type=checkbox]{width:17px;height:17px;cursor:pointer;accent-color:#3182ce}
+.col-user{background:rgba(235,244,255,.5)}.col-email{background:rgba(236,253,245,.5)}
+.col-radio{background:rgba(255,251,235,.5)}.col-sr-yes{background:rgba(240,253,244,.5)}
+.col-sr-no{background:rgba(255,245,245,.5)}.col-wo{background:rgba(250,240,255,.5)}
+thead .th-user{background:#2b6cb0}thead .th-email{background:#276749}
+thead .th-radio{background:#975a16}thead .th-sr-yes{background:#2f855a}
+thead .th-sr-no{background:#c53030}thead .th-wo{background:#6b46c1}
+thead .th-remark{background:#4a5568}thead .th-status{background:#2d3748}
+.remark-td input[type=text]{font-family:'Sarabun',sans-serif;font-size:12px;border:1px solid #e2e8f0;border-radius:6px;padding:4px 7px;width:120px;color:#2d3748;background:#f7fafc}
+.remark-td input:focus{outline:none;border-color:#3182ce;background:white}
+.save-btn{font-family:'Sarabun',sans-serif;font-size:11px;font-weight:500;padding:4px 10px;border-radius:6px;border:none;cursor:pointer;background:#ebf4ff;color:#2b6cb0;transition:all .15s;white-space:nowrap}
+.save-btn:hover{background:#bee3f8}
+.save-btn:disabled{background:#e6fffa;color:#276749;cursor:default}
+.save-btn.saving{background:#fefcbf;color:#975a16}
+.hbtn{font-family:'Sarabun',sans-serif;font-size:12px;font-weight:500;padding:6px 12px;border-radius:8px;border:none;cursor:pointer;transition:all .15s}
+.hbtn-outline{background:transparent;color:white;border:1px solid rgba(255,255,255,.4)}
+.hbtn-outline:hover{background:rgba(255,255,255,.1)}
+.hbtn-primary{background:#3182ce;color:white}
+.hbtn-primary:hover{background:#2b6cb0}
+.loading-wrap{text-align:center;padding:2rem;color:#718096;font-size:14px}
+@media(max-width:680px){table{font-size:11px}thead th,tbody td{padding:6px 5px}.remark-td{display:none}}
 </style>
 </head>
 <body>
 
-<div class="loading-overlay" id="loading">
-  <div class="loading-box">⏳ กำลังโหลดข้อมูล...</div>
+<!-- CONFIG BANNER -->
+<div id="config-banner">
+  <span>⚙️ ใส่ Google Apps Script URL ก่อนใช้งาน:</span>
+  <input type="text" id="api-url-input" placeholder="https://script.google.com/macros/s/XXXXX/exec" />
+  <button onclick="saveApiUrl()">บันทึก URL</button>
+  <span id="url-status"></span>
 </div>
 
 <div id="toast"></div>
@@ -164,9 +79,9 @@ thead .th-status { background: #2d3748; }
 <header>
   <div class="header-left">
     <h1>CMMS — สำรวจความต้องการแต่ละหน่วยงาน</h1>
-    <p>ติ๊กแล้วกด "บันทึก" — ข้อมูลจะ sync ขึ้น Google Sheets ทันที</p>
+    <p>ติ๊กแล้วกด "บันทึก" — ข้อมูล sync ขึ้น Google Sheets ทันที</p>
   </div>
-  <div style="display:flex;gap:8px;">
+  <div style="display:flex;gap:8px">
     <button class="hbtn hbtn-outline" onclick="loadAll()">🔄 โหลดใหม่</button>
     <button class="hbtn hbtn-primary" onclick="saveAll()">💾 บันทึกทั้งหมด</button>
   </div>
@@ -182,78 +97,74 @@ thead .th-status { background: #2d3748; }
   <div class="sum-chip" style="background:#faf5ff;color:#6b46c1">📋 WO+ใบจ่าย: <strong id="s6">0</strong></div>
 </div>
 
-<main id="main-content">
-  <!-- จะ render ด้วย JS -->
-</main>
+<main id="main-content"><div class="loading-wrap">⏳ กำลังโหลด...</div></main>
 
 <script>
-// ======= DATA DEFINITION =======
-const GROUPS = [
-  {
-    label: 'ศูนย์ควบคุมระบบไฟฟ้า (ต้นทาง)',
-    group: 'ศูนย์ควบคุม',
-    rows: [
-      { dept: 'ศูนย์ SCADA', sub: '' },
-      { dept: 'DCC1', sub: 'ศูนย์จำหน่าย' },
-      { dept: 'DCC2', sub: 'ศูนย์จำหน่าย' },
-      { dept: 'DCC4', sub: 'ศูนย์จำหน่าย' },
-      { dept: 'DCC5', sub: 'ศูนย์จำหน่าย' },
-      { dept: 'TCC3', sub: 'ศูนย์ระบบส่ง' },
-      { dept: 'TCC6', sub: 'ศูนย์ระบบส่ง' },
-    ]
-  },
-  {
-    label: 'ห้องไฟฟ้า ฝบร. / ฝคสู.',
-    group: 'ห้องไฟฟ้า',
-    rows: [
-      { dept: 'ห้องไฟฟ้า ฝบร.', sub: 'วัดเลียบ' },
-      { dept: 'ไฟฟ้า 9 ฝคสู.', sub: 'ราษฎร์บูรณะ' },
-    ]
-  },
-  {
-    label: 'แผนกที่รับผิดชอบ — เวลาราชการ',
-    group: 'แผนกเวลาราชการ',
-    rows: [
-      { dept: 'รส. 1', sub: '' }, { dept: 'รส. 2', sub: '' }, { dept: 'รส. 3', sub: '' },
-      { dept: 'รถ. 1', sub: '' }, { dept: 'รถ. 2', sub: '' }, { dept: 'รถ. 3', sub: '' },
-      { dept: 'อส. 1', sub: '' }, { dept: 'อส. 2', sub: '' }, { dept: 'อส. 3', sub: '' },
-      { dept: 'ปค. 1', sub: '' }, { dept: 'ปค. 2', sub: '' }, { dept: 'ปค. 3', sub: '' },
-      { dept: 'ปค. 4', sub: '' }, { dept: 'ปค. 5', sub: '' }, { dept: 'ปค. 6', sub: '' },
-    ]
-  },
-  {
-    label: 'ไฟฟ้า 2–10 — นอกเวลา / วันหยุด',
-    group: 'ไฟฟ้านอกเวลา',
-    rows: [
-      { dept: 'ไฟฟ้า 2 (กปค.1)', sub: 'วัดเลียบ' },
-      { dept: 'ไฟฟ้า 2 (กปค.2)', sub: 'วัดเลียบ' },
-      { dept: 'ไฟฟ้า 3 (อส.1)', sub: 'วัดเลียบ' },
-      { dept: 'ไฟฟ้า 4 (อส.2)', sub: 'แสนแสบ' },
-      { dept: 'ไฟฟ้า 5 (อส.3)', sub: 'ประชาชื่น' },
-      { dept: 'ไฟฟ้า 6 (รส.1)', sub: 'บางพูด' },
-      { dept: 'ไฟฟ้า 7 (รส.2)', sub: 'บางขุนเทียน' },
-      { dept: 'ไฟฟ้า 8 (รถ.1,2,3)', sub: 'ไฝสิงโต' },
-      { dept: 'ไฟฟ้า 10 (รส.3)', sub: 'บางพลี' },
-    ]
+// ======= API URL (เก็บใน localStorage) =======
+const LS_KEY = 'cmms_api_url';
+let API_URL = localStorage.getItem(LS_KEY) || '';
+
+function saveApiUrl() {
+  const val = document.getElementById('api-url-input').value.trim();
+  if (!val.startsWith('https://script.google.com')) {
+    showToast('❌ URL ไม่ถูกต้อง ต้องขึ้นต้นด้วย https://script.google.com', true);
+    return;
   }
+  API_URL = val;
+  localStorage.setItem(LS_KEY, val);
+  document.getElementById('config-banner').className = 'ok';
+  document.getElementById('url-status').textContent = '✅ บันทึกแล้ว';
+  showToast('✅ บันทึก URL แล้ว กำลังโหลดข้อมูล...');
+  setTimeout(loadAll, 800);
+}
+
+function initBanner() {
+  if (API_URL) {
+    document.getElementById('api-url-input').value = API_URL;
+    document.getElementById('config-banner').className = 'ok';
+    document.getElementById('url-status').textContent = '✅ พร้อมใช้งาน';
+  }
+}
+
+// ======= DATA =======
+const GROUPS = [
+  { label:'ศูนย์ควบคุมระบบไฟฟ้า (ต้นทาง)', group:'ศูนย์ควบคุม', rows:[
+    {dept:'ศูนย์ SCADA',sub:''},{dept:'DCC1',sub:'ศูนย์จำหน่าย'},{dept:'DCC2',sub:'ศูนย์จำหน่าย'},
+    {dept:'DCC4',sub:'ศูนย์จำหน่าย'},{dept:'DCC5',sub:'ศูนย์จำหน่าย'},{dept:'TCC3',sub:'ศูนย์ระบบส่ง'},{dept:'TCC6',sub:'ศูนย์ระบบส่ง'}
+  ]},
+  { label:'ห้องไฟฟ้า ฝบร. / ฝคสู.', group:'ห้องไฟฟ้า', rows:[
+    {dept:'ห้องไฟฟ้า ฝบร.',sub:'วัดเลียบ'},{dept:'ไฟฟ้า 9 ฝคสู.',sub:'ราษฎร์บูรณะ'}
+  ]},
+  { label:'แผนกที่รับผิดชอบ — เวลาราชการ', group:'แผนกเวลาราชการ', rows:[
+    {dept:'รส. 1',sub:''},{dept:'รส. 2',sub:''},{dept:'รส. 3',sub:''},
+    {dept:'รถ. 1',sub:''},{dept:'รถ. 2',sub:''},{dept:'รถ. 3',sub:''},
+    {dept:'อส. 1',sub:''},{dept:'อส. 2',sub:''},{dept:'อส. 3',sub:''},
+    {dept:'ปค. 1',sub:''},{dept:'ปค. 2',sub:''},{dept:'ปค. 3',sub:''},
+    {dept:'ปค. 4',sub:''},{dept:'ปค. 5',sub:''},{dept:'ปค. 6',sub:''}
+  ]},
+  { label:'ไฟฟ้า 2–10 — นอกเวลา / วันหยุด', group:'ไฟฟ้านอกเวลา', rows:[
+    {dept:'ไฟฟ้า 2 (กปค.1)',sub:'วัดเลียบ'},{dept:'ไฟฟ้า 2 (กปค.2)',sub:'วัดเลียบ'},
+    {dept:'ไฟฟ้า 3 (อส.1)',sub:'วัดเลียบ'},{dept:'ไฟฟ้า 4 (อส.2)',sub:'แสนแสบ'},
+    {dept:'ไฟฟ้า 5 (อส.3)',sub:'ประชาชื่น'},{dept:'ไฟฟ้า 6 (รส.1)',sub:'บางพูด'},
+    {dept:'ไฟฟ้า 7 (รส.2)',sub:'บางขุนเทียน'},{dept:'ไฟฟ้า 8 (รถ.1,2,3)',sub:'ไฝสิงโต'},
+    {dept:'ไฟฟ้า 10 (รส.3)',sub:'บางพลี'}
+  ]}
 ];
 
 const THEAD = `<thead><tr>
   <th style="text-align:left;min-width:155px">หน่วยงาน</th>
-  <th class="th-user">1. User CMMS</th>
-  <th class="th-email">2. Email แจ้ง</th>
-  <th class="th-radio">3. ใช้วิทยุ</th>
-  <th class="th-sr-yes">4. ต้องการ SR</th>
-  <th class="th-sr-no">5. ไม่ต้องการ SR</th>
-  <th class="th-wo">6. สร้าง WO+ใบจ่าย</th>
-  <th class="th-remark">หมายเหตุ</th>
-  <th class="th-status">สถานะ</th>
+  <th class="th-user">1. User CMMS</th><th class="th-email">2. Email แจ้ง</th>
+  <th class="th-radio">3. ใช้วิทยุ</th><th class="th-sr-yes">4. ต้องการ SR</th>
+  <th class="th-sr-no">5. ไม่ต้องการ SR</th><th class="th-wo">6. สร้าง WO+ใบจ่าย</th>
+  <th class="th-remark">หมายเหตุ</th><th class="th-status">สถานะ</th>
 </tr></thead>`;
 
+function rowId(dept){ return dept.replace(/\s+/g,'_').replace(/[().,]/g,''); }
+
 function makeRow(r, group) {
-  const id = r.dept.replace(/\s+/g, '_').replace(/[().,]/g, '');
+  const id = rowId(r.dept);
   return `<tr id="row_${id}" data-dept="${r.dept}" data-group="${group}">
-    <td>${r.dept}${r.sub ? ` <span class="dept-sub">${r.sub}</span>` : ''}</td>
+    <td>${r.dept}${r.sub?` <span class="dept-sub">${r.sub}</span>`:''}</td>
     <td class="col-user"><div class="cb-wrap"><input type="checkbox" id="c1_${id}" onchange="markDirty('${id}')"></div></td>
     <td class="col-email"><div class="cb-wrap"><input type="checkbox" id="c2_${id}" onchange="markDirty('${id}')"></div></td>
     <td class="col-radio"><div class="cb-wrap"><input type="checkbox" id="c3_${id}" onchange="markDirty('${id}')"></div></td>
@@ -268,136 +179,125 @@ function makeRow(r, group) {
 function renderTables() {
   let html = '';
   GROUPS.forEach(g => {
-    html += `<div class="section-title">${g.label}</div>
-    <div class="table-card"><table>${THEAD}<tbody>`;
+    html += `<div class="section-title">${g.label}</div><div class="table-card"><table>${THEAD}<tbody>`;
     g.rows.forEach(r => html += makeRow(r, g.group));
     html += '</tbody></table></div>';
   });
   document.getElementById('main-content').innerHTML = html;
 }
 
-// ======= MUTUAL EXCLUSIVE SR =======
 function exclCb(id, me, other) {
-  if (document.getElementById(me + '_' + id).checked) {
-    document.getElementById(other + '_' + id).checked = false;
-  }
+  if (document.getElementById(me+'_'+id).checked)
+    document.getElementById(other+'_'+id).checked = false;
   markDirty(id);
 }
 
-// ======= DIRTY TRACKING =======
 function markDirty(id) {
-  const btn = document.getElementById('btn_' + id);
-  if (btn) { btn.textContent = '💾 บันทึก'; btn.disabled = false; btn.className = 'save-btn'; }
+  const btn = document.getElementById('btn_'+id);
+  if (btn) { btn.textContent='💾 บันทึก'; btn.disabled=false; btn.className='save-btn'; }
   updateSummary();
 }
 
-// ======= SUMMARY =======
 function updateSummary() {
-  const counts = [0,0,0,0,0,0];
-  GROUPS.forEach(g => g.rows.forEach(r => {
-    const id = r.dept.replace(/\s+/g, '_').replace(/[().,]/g, '');
-    const get = (n) => { const el = document.getElementById(n+'_'+id); return el && el.checked; };
-    if (get('c1')) counts[0]++;
-    if (get('c2')) counts[1]++;
-    if (get('c3')) counts[2]++;
-    if (get('c4')) counts[3]++;
-    if (get('c5')) counts[4]++;
-    if (get('c6')) counts[5]++;
+  const c=[0,0,0,0,0,0];
+  GROUPS.forEach(g=>g.rows.forEach(r=>{
+    const id=rowId(r.dept);
+    const g2=n=>{ const e=document.getElementById(n+'_'+id); return e&&e.checked; };
+    if(g2('c1'))c[0]++; if(g2('c2'))c[1]++; if(g2('c3'))c[2]++;
+    if(g2('c4'))c[3]++; if(g2('c5'))c[4]++; if(g2('c6'))c[5]++;
   }));
-  for (let i = 1; i <= 6; i++) document.getElementById('s'+i).textContent = counts[i-1];
+  for(let i=1;i<=6;i++) document.getElementById('s'+i).textContent=c[i-1];
 }
 
-// ======= GET PAYLOAD =======
 function getPayload(id, dept, group) {
-  const get = (n) => { const el = document.getElementById(n+'_'+id); return el ? el.checked : false; };
-  const rm = document.getElementById('rm_'+id);
-  return { dept, group, c1:get('c1'), c2:get('c2'), c3:get('c3'), c4:get('c4'), c5:get('c5'), c6:get('c6'), remark: rm ? rm.value : '' };
+  const g=n=>{ const e=document.getElementById(n+'_'+id); return e?e.checked:false; };
+  const rm=document.getElementById('rm_'+id);
+  return {dept,group,c1:g('c1'),c2:g('c2'),c3:g('c3'),c4:g('c4'),c5:g('c5'),c6:g('c6'),remark:rm?rm.value:''};
 }
 
-// ======= SAVE ONE ROW =======
+// ======= SAVE via fetch POST =======
 function saveRow(id) {
+  if (!API_URL) { showToast('❌ กรุณาใส่ Google Apps Script URL ก่อน', true); return; }
   const row = document.getElementById('row_'+id);
   const dept = row.getAttribute('data-dept');
   const group = row.getAttribute('data-group');
   const btn = document.getElementById('btn_'+id);
-  btn.textContent = '⏳...'; btn.disabled = true; btn.className = 'save-btn saving';
+  btn.textContent='⏳...'; btn.disabled=true; btn.className='save-btn saving';
 
-  google.script.run
-    .withSuccessHandler(() => {
-      btn.textContent = '✅ บันทึกแล้ว'; btn.disabled = true; btn.className = 'save-btn';
-      showToast('✅ บันทึก ' + dept + ' แล้ว');
-    })
-    .withFailureHandler(err => {
-      btn.textContent = '❌ ลองใหม่'; btn.disabled = false; btn.className = 'save-btn';
-      showToast('❌ เกิดข้อผิดพลาด: ' + err.message, true);
-    })
-    .saveRow(getPayload(id, dept, group));
+  fetch(API_URL, {
+    method: 'POST',
+    mode: 'no-cors',           // Apps Script ต้องการ no-cors
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(getPayload(id, dept, group))
+  })
+  .then(() => {
+    // no-cors ไม่รู้ response จริง — ถือว่าสำเร็จ
+    btn.textContent='✅ บันทึกแล้ว'; btn.disabled=true; btn.className='save-btn';
+    showToast('✅ บันทึก '+dept+' แล้ว');
+  })
+  .catch(err => {
+    btn.textContent='❌ ลองใหม่'; btn.disabled=false; btn.className='save-btn';
+    showToast('❌ เกิดข้อผิดพลาด: '+err.message, true);
+  });
 }
 
-// ======= SAVE ALL =======
 function saveAll() {
-  let pending = 0;
-  GROUPS.forEach(g => g.rows.forEach(r => {
-    const id = r.dept.replace(/\s+/g, '_').replace(/[().,]/g, '');
-    const btn = document.getElementById('btn_'+id);
-    if (btn && !btn.disabled) pending++;
+  let pending=0;
+  GROUPS.forEach(g=>g.rows.forEach(r=>{
+    const id=rowId(r.dept);
+    const btn=document.getElementById('btn_'+id);
+    if(btn&&!btn.disabled) pending++;
   }));
-  if (pending === 0) { showToast('ไม่มีรายการที่ต้องบันทึก'); return; }
-
-  GROUPS.forEach(g => g.rows.forEach(r => {
-    const id = r.dept.replace(/\s+/g, '_').replace(/[().,]/g, '');
-    const btn = document.getElementById('btn_'+id);
-    if (btn && !btn.disabled) saveRow(id);
+  if(pending===0){ showToast('ไม่มีรายการที่ต้องบันทึก'); return; }
+  GROUPS.forEach(g=>g.rows.forEach(r=>{
+    const id=rowId(r.dept);
+    const btn=document.getElementById('btn_'+id);
+    if(btn&&!btn.disabled) saveRow(id);
   }));
 }
 
-// ======= LOAD FROM SHEET =======
+// ======= LOAD via fetch GET =======
 function loadAll() {
-  document.getElementById('loading').style.display = 'flex';
-  google.script.run
-    .withSuccessHandler(data => {
-      document.getElementById('loading').style.display = 'none';
-      applyData(data);
+  if (!API_URL) { showToast('❌ กรุณาใส่ Google Apps Script URL ก่อน', true); return; }
+  document.getElementById('main-content').innerHTML='<div class="loading-wrap">⏳ กำลังโหลด...</div>';
+  fetch(API_URL+'?action=getAll')
+    .then(r=>r.json())
+    .then(res=>{
+      renderTables();
+      if(res.success && res.data) applyData(res.data);
+      updateSummary();
       showToast('🔄 โหลดข้อมูลล่าสุดแล้ว');
     })
-    .withFailureHandler(err => {
-      document.getElementById('loading').style.display = 'none';
-      showToast('❌ โหลดไม่สำเร็จ: ' + err.message, true);
-    })
-    .getAllData();
+    .catch(()=>{
+      renderTables();
+      updateSummary();
+      showToast('⚠️ โหลดข้อมูลไม่ได้ แต่ยังติ๊กบันทึกได้', true);
+    });
 }
 
 function applyData(rows) {
-  rows.forEach(row => {
-    const dept = row['หน่วยงาน'];
-    const id = dept.replace(/\s+/g, '_').replace(/[().,]/g, '');
-    const set = (n, val) => { const el = document.getElementById(n+'_'+id); if(el) el.checked = val === '✓'; };
-    const rm = document.getElementById('rm_'+id);
-    set('c1', row['1.User CMMS']); set('c2', row['2.Email แจ้ง']); set('c3', row['3.ใช้วิทยุ']);
-    set('c4', row['4.ต้องการ SR']); set('c5', row['5.ไม่ต้องการ SR']); set('c6', row['6.สร้าง WO+ใบจ่าย']);
-    if (rm) rm.value = row['หมายเหตุ'] || '';
-    const btn = document.getElementById('btn_'+id);
-    if (btn) { btn.textContent = '✅ บันทึกแล้ว'; btn.disabled = true; }
+  rows.forEach(row=>{
+    const dept=row['หน่วยงาน'];
+    const id=rowId(dept);
+    const set=(n,val)=>{ const e=document.getElementById(n+'_'+id); if(e) e.checked=(val==='✓'); };
+    set('c1',row['1.User CMMS']); set('c2',row['2.Email แจ้ง']); set('c3',row['3.ใช้วิทยุ']);
+    set('c4',row['4.ต้องการ SR']); set('c5',row['5.ไม่ต้องการ SR']); set('c6',row['6.สร้าง WO+ใบจ่าย']);
+    const rm=document.getElementById('rm_'+id); if(rm) rm.value=row['หมายเหตุ']||'';
+    const btn=document.getElementById('btn_'+id); if(btn){ btn.textContent='✅ บันทึกแล้ว'; btn.disabled=true; }
   });
-  updateSummary();
 }
 
-// ======= TOAST =======
 function showToast(msg, isError) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'show' + (isError ? ' error' : '');
-  setTimeout(() => t.className = '', 3000);
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='show'+(isError?' error':'');
+  setTimeout(()=>t.className='',3500);
 }
 
 // ======= INIT =======
+initBanner();
 renderTables();
 updateSummary();
-
-// โหลดข้อมูลเมื่อเปิดหน้า
-window.onload = () => {
-  if (typeof google !== 'undefined') loadAll();
-};
+if (API_URL) setTimeout(loadAll, 500);
 </script>
 </body>
 </html>
