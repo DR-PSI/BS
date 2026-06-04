@@ -201,14 +201,44 @@ function saveRow(id) {
   });
 }
 
-function saveAll() {
-  let n=0;
+// ======= SAVE ALL — ทีละแถว (queue) =======
+async function saveAll() {
+  // รวบรวม id ที่ยังไม่ได้บันทึก
+  const pending = [];
   GROUPS.forEach(g=>g.rows.forEach(r=>{
     const id=rowId(r.dept);
     const btn=document.getElementById('btn_'+id);
-    if(btn&&!btn.disabled){ saveRow(id); n++; }
+    if(btn&&!btn.disabled) pending.push(id);
   }));
-  if(n===0) showToast('ไม่มีรายการที่ต้องบันทึก');
+  if(pending.length===0){ showToast('ไม่มีรายการที่ต้องบันทึก'); return; }
+
+  showToast('💾 กำลังบันทึก 0/'+pending.length+'...');
+
+  for(let i=0;i<pending.length;i++){
+    const id=pending[i];
+    const row=document.getElementById('row_'+id);
+    const dept=row.getAttribute('data-dept');
+    const group=row.getAttribute('data-group');
+    const btn=document.getElementById('btn_'+id);
+    btn.textContent='⏳...'; btn.disabled=true; btn.className='save-btn saving';
+
+    try {
+      await fetch(API_URL,{
+        method:'POST', mode:'no-cors',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify(getPayload(id,dept,group))
+      });
+      btn.textContent='✅ บันทึกแล้ว'; btn.className='save-btn';
+    } catch(err) {
+      btn.textContent='❌ ลองใหม่'; btn.disabled=false; btn.className='save-btn';
+    }
+
+    showToast('💾 บันทึก '+(i+1)+'/'+pending.length+' ('+dept+')');
+    // รอ 600ms ก่อนแถวถัดไป — ป้องกัน Apps Script rate limit
+    if(i < pending.length-1) await new Promise(r=>setTimeout(r,600));
+  }
+
+  showToast('✅ บันทึกครบทั้งหมด '+pending.length+' หน่วยงานแล้ว');
 }
 
 // ======= LOAD =======
